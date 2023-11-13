@@ -1,3 +1,6 @@
+using RestWithASPNET5.Services;
+using RestWithASPNET5.Services.Implementations;
+
 namespace RestWithASPNET5
 {
     public class Program
@@ -9,6 +12,8 @@ namespace RestWithASPNET5
             // Add services to the container.
 
             builder.Services.AddControllers();
+
+            builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
 
             var app = builder.Build();
 
