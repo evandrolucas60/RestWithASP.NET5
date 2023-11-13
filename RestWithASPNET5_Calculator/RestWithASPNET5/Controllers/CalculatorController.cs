@@ -15,7 +15,7 @@ namespace RestWithASPNET5.Controllers
         }
 
         [HttpGet("sum/{firstNumber}/{secondNumber}")]
-        public IActionResult Get(string firstNumber, string secondNumber)
+        public IActionResult Sum(string firstNumber, string secondNumber)
         {
             if (IsNumeric(secondNumber) && IsNumeric(firstNumber)) 
             {
@@ -25,6 +25,43 @@ namespace RestWithASPNET5.Controllers
 
             return BadRequest("Invalid Input");
         }
+
+        [HttpGet("sub/{firstNumber}/{secondNumber}")]
+        public IActionResult Sub(string firstNumber, string secondNumber)
+        {
+            if (IsNumeric(secondNumber) && IsNumeric(firstNumber))
+            {
+                var sum = ConvertToDecimal(firstNumber) - ConvertToDecimal(secondNumber);
+                return Ok(sum.ToString());
+            }
+
+            return BadRequest("Invalid Input");
+        }
+
+        [HttpGet("mult/{firstNumber}/{secondNumber}")]
+        public IActionResult Mult(string firstNumber, string secondNumber)
+        {
+            if (IsNumeric(secondNumber) && IsNumeric(firstNumber))
+            {
+                var sum = ConvertToDecimal(firstNumber) * ConvertToDecimal(secondNumber);
+                return Ok(sum.ToString());
+            }
+
+            return BadRequest("Invalid Input");
+        }
+
+        [HttpGet("average/{firstNumber}/{secondNumber}")]
+        public IActionResult Average(string firstNumber, string secondNumber)
+        {
+            if (IsNumeric(secondNumber) && IsNumeric(firstNumber))
+            {
+                var sum = (ConvertToDecimal(firstNumber) + ConvertToDecimal(secondNumber))/2;
+                return Ok(sum.ToString());
+            }
+
+            return BadRequest("Invalid Input");
+        }
+
         private bool IsNumeric(string strNumber)
         {
             double number;
