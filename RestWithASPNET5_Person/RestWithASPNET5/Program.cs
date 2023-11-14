@@ -21,6 +21,9 @@ namespace RestWithASPNET5
             //Add a DbContext as a service
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
+            //versioning API
+            builder.Services.AddApiVersioning();
+
             //Add a Dependencie Injection To IPersonService Interface
             builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
 
