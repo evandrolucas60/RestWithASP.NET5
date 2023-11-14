@@ -1,10 +1,16 @@
-﻿using RestWithASPNET5.Model;
+﻿using RestWithASPNET5.Context;
+using RestWithASPNET5.Model;
 
 namespace RestWithASPNET5.Services.Implementations
 {
     public class PersonServiceImplementation : IPersonService
     {
-        private volatile int count;
+        private readonly ApplicationDbContext _context;
+
+        public PersonServiceImplementation(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
         public Person Create(Person person)
         {
@@ -18,13 +24,7 @@ namespace RestWithASPNET5.Services.Implementations
 
         public List<Person> FindAll()
         {
-            List<Person> persons = new List<Person>();
-            for (int i = 0;i < 8; i++)
-            {
-                Person person = MockPerson(i);
-                persons.Add(person);  
-            }
-            return persons;
+           return _context.persons.ToList();
         }
 
 
@@ -32,7 +32,7 @@ namespace RestWithASPNET5.Services.Implementations
         {
            return new Person 
            { 
-            Id = IncrementAndGet(),
+            Id = 1,
             FirstName = "Evandro",
             LastName = "Lucas",
             Address = "Jaboatão dos guararapes - PE",
@@ -45,21 +45,5 @@ namespace RestWithASPNET5.Services.Implementations
             return person;
         }
 
-        private Person MockPerson(int i)
-        {
-            return new Person
-            {
-                Id = IncrementAndGet(),
-                FirstName = "Person Name" + i,
-                LastName = "Person LastName" + i,
-                Address = "some Address" + i,
-                Gender = "Male"
-            };
-        }
-
-        private long IncrementAndGet()
-        {
-            return Interlocked.Increment(ref count);
-        }
     }
 }
