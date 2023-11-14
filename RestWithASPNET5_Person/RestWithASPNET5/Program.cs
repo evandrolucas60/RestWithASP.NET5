@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using RestWithASPNET5.Context;
 using RestWithASPNET5.Services;
 using RestWithASPNET5.Services.Implementations;
 
@@ -13,6 +15,13 @@ namespace RestWithASPNET5
 
             builder.Services.AddControllers();
 
+            //Setting a connectioString
+            var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
+
+            //Add a DbContext as a service
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+
+            //Add a Dependencie Injection To IPersonService Interface
             builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
 
             var app = builder.Build();
