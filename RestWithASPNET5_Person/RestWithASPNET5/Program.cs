@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using RestWithASPNET5.Context;
 using RestWithASPNET5.Business;
 using RestWithASPNET5.Business.Implementations;
+using RestWithASPNET5.Repository;
+using RestWithASPNET5.Repository.Implementations;
 
 namespace RestWithASPNET5
 {
@@ -26,6 +28,7 @@ namespace RestWithASPNET5
 
             //Add a Dependencie Injection To IPersonService Interface
             builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
+            builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
 
             var app = builder.Build();
 
