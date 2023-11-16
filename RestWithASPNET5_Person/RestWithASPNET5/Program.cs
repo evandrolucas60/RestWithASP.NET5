@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RestWithASPNET5.Context;
-using RestWithASPNET5.Services;
-using RestWithASPNET5.Services.Implementations;
+using RestWithASPNET5.Business;
+using RestWithASPNET5.Business.Implementations;
 
 namespace RestWithASPNET5
 {
@@ -25,7 +25,7 @@ namespace RestWithASPNET5
             builder.Services.AddApiVersioning();
 
             //Add a Dependencie Injection To IPersonService Interface
-            builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
+            builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
 
             var app = builder.Build();
 
