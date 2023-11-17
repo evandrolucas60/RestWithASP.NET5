@@ -68,7 +68,7 @@ namespace RestWithASPNET5.Repository.Implementations
         //Method responsible for Update a person information
         public Person Update(Person person)
         {
-            if (!Exists(person.Id)) return new Person();
+            if (!Exists(person.Id)) return null;
 
             var result = _context.persons.SingleOrDefault(p => p.Id.Equals(person.Id));
             if (result != null)
