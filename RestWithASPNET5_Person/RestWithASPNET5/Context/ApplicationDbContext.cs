@@ -12,6 +12,7 @@ namespace RestWithASPNET5.Context
         }
 
         public DbSet<Person> persons { get; set; }
+        public DbSet<Book> books { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,6 +26,12 @@ namespace RestWithASPNET5.Context
                     new Person { Id = 3, Address = "Petrolina", FirstName = "Danielly", Gender = "Femele", LastName = "Oliveira"},
                     new Person { Id = 4, Address = "Juazeiro", FirstName = "Lucinea", Gender = "Femele", LastName = "Lucas"},
                     new Person { Id = 5, Address = "Recife", FirstName = "Bruno", Gender = "male", LastName = "Lucas"}
+                );
+            
+            
+            modelBuilder.Entity<Book>().HasData(
+                    new Book { Id = 1, Author = "Recife", Date = "09-04-1992", Price = "Male", Title = "Lucas"},
+                    
                 );
         }
     }
