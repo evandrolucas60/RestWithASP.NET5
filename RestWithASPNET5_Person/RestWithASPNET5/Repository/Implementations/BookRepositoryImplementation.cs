@@ -46,7 +46,6 @@ namespace RestWithASPNET5.Repository.Implementations
             }
         }
 
-
         public List<Book> FindAll()
         {
             return _context.books.ToList();
@@ -61,7 +60,7 @@ namespace RestWithASPNET5.Repository.Implementations
         {
             if (!Exists(book.Id)) return null;
 
-            var result = _context.persons.SingleOrDefault(b => b.Id.Equals(book.Id));
+            var result = _context.books.SingleOrDefault(b => b.Id.Equals(book.Id));
             if (result != null)
             {
                 try
