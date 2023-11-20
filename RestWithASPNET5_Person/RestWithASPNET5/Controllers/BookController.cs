@@ -4,12 +4,15 @@ using RestWithASPNET5.Model;
 
 namespace RestWithASPNET5.Controllers
 {
-    public class BookController : Controller
+    [ApiVersion("1")]
+    [ApiController]
+    [Route("api/[controller]/v{version:apiVersion}")]
+    public class BookController : ControllerBase
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<BookController> _logger;
         private IBookBusiness _bookBusiness;
 
-        public BookController(ILogger logger, IBookBusiness bookBusiness)
+        public BookController(ILogger<BookController> logger, IBookBusiness bookBusiness)
         {
             _logger = logger;
             _bookBusiness = bookBusiness;
