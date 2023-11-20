@@ -3,7 +3,7 @@ using RestWithASPNET5.Context;
 using RestWithASPNET5.Business;
 using RestWithASPNET5.Business.Implementations;
 using RestWithASPNET5.Repository;
-using RestWithASPNET5.Repository.Implementations;
+using RestWithASPNET5.Repository.Generic;
 
 namespace RestWithASPNET5
 {
@@ -15,11 +15,6 @@ namespace RestWithASPNET5
 
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
-
-            //Log.Logger = new LoggerConfiguration().WriteTo
-            //    .Console()
-            //    .CreateLogger();
-
 
             // Add services to the container.
             builder.Services.AddControllers();
@@ -35,9 +30,8 @@ namespace RestWithASPNET5
 
             //Add a Dependencie Injection To IPersonService Interface
             builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
-            builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
             builder.Services.AddScoped<IBookBusiness, BookBusinessImplementation>();
-            builder.Services.AddScoped<IBookRepository, BookRepositoryImplementation>();
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
             var app = builder.Build();
 
@@ -61,24 +55,5 @@ namespace RestWithASPNET5
 
             app.Run();
         }
-
-        //private static void MigrationDatabase(string connectionString)
-        //{
-        //    try
-        //    {
-        //        var evolveConnection = new SqlConnection(connectionString);
-        //        var evolve = new Evolve(evolveConnection, msg => Log.Information(msg))
-        //        {
-        //            Locations = new List<string> { "db/migrations", "db/dataset"},
-        //            IsEraseDisabled = true,
-        //        };
-        //        evolve.Migrate();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Log.Error("Database migration failed", e);
-        //        throw;
-        //    }
-        //}
     }
 }
