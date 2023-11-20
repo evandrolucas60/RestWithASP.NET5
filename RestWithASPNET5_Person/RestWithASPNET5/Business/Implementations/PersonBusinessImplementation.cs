@@ -8,9 +8,9 @@ namespace RestWithASPNET5.Business.Implementations
 {
     public class PersonBusinessImplementation : IPersonBusiness
     {
-        private readonly IPersonRepository _repository;
+        private readonly IRepository<Person> _repository;
 
-        public PersonBusinessImplementation(IPersonRepository repository)
+        public PersonBusinessImplementation(IRepository<Person> repository)
         {
             _repository = repository;
         }
@@ -30,7 +30,7 @@ namespace RestWithASPNET5.Business.Implementations
         //Method responsible for return a list of person
         public List<Person> FindAll()
         {
-           return _repository.FindAll();
+            return _repository.FindAll();
         }
 
 

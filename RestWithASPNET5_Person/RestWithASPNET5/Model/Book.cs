@@ -1,8 +1,9 @@
-﻿namespace RestWithASPNET5.Model
+﻿using RestWithASPNET5.Model.Base;
+
+namespace RestWithASPNET5.Model
 {
-    public class Book
+    public class Book : BaseEntity
     {
-        public long Id { get; set; }
         public string Author { get; set; }
         public DateTime Date { get; set; }
         public double Price { get; set; }

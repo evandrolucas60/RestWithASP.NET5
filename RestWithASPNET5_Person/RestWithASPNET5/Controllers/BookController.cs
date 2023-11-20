@@ -45,6 +45,7 @@ namespace RestWithASPNET5.Controllers
             return Ok(_bookBusiness.Update(book));
         }
 
+        [HttpDelete("{id}")]
         [HttpDelete]
         public IActionResult Delete(long id)
         {
