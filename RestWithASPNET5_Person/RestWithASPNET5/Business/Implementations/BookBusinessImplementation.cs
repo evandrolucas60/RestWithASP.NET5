@@ -7,6 +7,11 @@ namespace RestWithASPNET5.Business.Implementations
     {
         private readonly IBookRepository _repository;
 
+        public BookBusinessImplementation(IBookRepository repository)
+        {
+            _repository = repository;
+        }
+
         public Book Create(Book book)
         {
             return _repository.Create(book);
