@@ -30,7 +30,14 @@ namespace RestWithASPNET5.Context
             
             
             modelBuilder.Entity<Book>().HasData(
-                    new Book { Id = 1, Author = "Recife", Date = "09-04-1992", Price = "Male", Title = "Lucas"},
+                    new Book { Id = 1, Author = "Stephen King", Date = new DateTime(2020, 02, 22), Price = 89.8, Title = "IT"},
+                    new Book { Id = 2, Author = "Stephen Hawking", Date = new DateTime(2020, 02, 22), Price = 103.89, Title = "A Brief time history"},
+                    new Book { Id = 3, Author = "Connan Arthur Doyle", Date = new DateTime(2020, 02, 22), Price = 146.73, Title = "Sherlock Holme - The Baskerville Dog"},
+                    new Book { Id = 4, Author = "Edgar Alan Poe", Date = new DateTime(2020, 02, 22), Price = 75.34, Title = "The Crow"},
+                    new Book { Id = 5, Author = "Agatha Christie", Date = new DateTime(2020, 02, 22), Price = 91.56, Title = "A Haunting in Vinice"},
+                    new Book { Id = 6, Author = "Agatha Christie", Date = new DateTime(2020, 02, 22), Price = 78.62, Title = "A Haunting in Vinice"},
+                    new Book { Id = 7, Author = "JJ Tolkien", Date = new DateTime(2020, 02, 22), Price = 52.32, Title = "The Hobbit"},
+                    new Book { Id = 8, Author = "Tom Clancy's", Date = new DateTime(2020, 02, 22), Price = 58.76, Title = "Spliter Cell"}
                     
                 );
         }
