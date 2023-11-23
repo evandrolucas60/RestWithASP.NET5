@@ -33,8 +33,8 @@ namespace RestWithASPNET5
             {
                 options.RespectBrowserAcceptHeader = true;
 
-                options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("application/xml"));
                 options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
+                options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("application/xml"));
             }).AddXmlSerializerFormatters();
 
             var filterOptions = new HyperMediaFilterOptions();
@@ -71,7 +71,7 @@ namespace RestWithASPNET5
 
             app.MapControllers();
 
-            app.MapControllerRoute("DefaultApi", "{controller=values}/{id?}");
+            app.MapControllerRoute("DefaultApi", "{controller=values}/v{version=apiVersion}/{id?}");
 
             app.Run();
         }

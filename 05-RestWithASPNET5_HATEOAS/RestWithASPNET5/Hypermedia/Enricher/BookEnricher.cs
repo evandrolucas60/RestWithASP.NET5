@@ -12,7 +12,7 @@ namespace RestWithASPNET5.Hypermedia.Enricher
         private readonly object _look = new object();
         protected override Task EnrichModel(BookVO content, IUrlHelper urlHelper)
         {
-            var path = "api/book/v1";
+            var path = "api/book";
             string link = getLink(content.Id, urlHelper, path);
 
             content.Links.Add(new HyperMediaLink()
@@ -48,7 +48,7 @@ namespace RestWithASPNET5.Hypermedia.Enricher
                 Type = "int"
             });
 
-            return null;
+            return Task.CompletedTask;
         }
 
         private string getLink(long id, IUrlHelper urlHelper, string path)
