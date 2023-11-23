@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace RestWithASPNET5.Hypermedia.Filters
 {
-    public class HiperMediaFilter : ResultFilterAttribute
+    public class HyperMediaFilter : ResultFilterAttribute
     {
         private readonly HyperMediaFilterOptions _hyperMediaFilterOptions;
 
-        public HiperMediaFilter(HyperMediaFilterOptions hyperMediaFilterOptions)
+        public HyperMediaFilter(HyperMediaFilterOptions hyperMediaFilterOptions)
         {
             _hyperMediaFilterOptions = hyperMediaFilterOptions;
         }

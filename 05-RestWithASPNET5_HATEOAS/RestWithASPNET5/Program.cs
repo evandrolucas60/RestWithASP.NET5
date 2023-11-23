@@ -5,6 +5,8 @@ using RestWithASPNET5.Business.Implementations;
 using RestWithASPNET5.Repository;
 using RestWithASPNET5.Repository.Generic;
 using Microsoft.Net.Http.Headers;
+using RestWithASPNET5.Hypermedia.Filters;
+using RestWithASPNET5.Hypermedia.Enricher;
 
 namespace RestWithASPNET5
 {
@@ -35,6 +37,12 @@ namespace RestWithASPNET5
                 options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
             }).AddXmlSerializerFormatters();
 
+            var filterOptions = new HyperMediaFilterOptions();
+            filterOptions.ContentResponseEnricherList.Add(new PersonEnricher());
+            filterOptions.ContentResponseEnricherList.Add(new BookEnricher());
+
+            builder.Services.AddSingleton(filterOptions);
+
             //versioning API
             builder.Services.AddApiVersioning();
 
@@ -62,6 +70,8 @@ namespace RestWithASPNET5
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.MapControllerRoute("DefaultApi", "{controller=values}/{id?}");
 
             app.Run();
         }
