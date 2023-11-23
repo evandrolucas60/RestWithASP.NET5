@@ -7,6 +7,8 @@ using RestWithASPNET5.Repository.Generic;
 using Microsoft.Net.Http.Headers;
 using RestWithASPNET5.Hypermedia.Filters;
 using RestWithASPNET5.Hypermedia.Enricher;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace RestWithASPNET5
 {
@@ -46,6 +48,22 @@ namespace RestWithASPNET5
             //versioning API
             builder.Services.AddApiVersioning();
 
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1",
+                    new OpenApiInfo
+                    {
+                        Title = "Rest API's From 0 to Azure with ASP.NET Core 5 and Docker",
+                        Version = "v1",
+                        Description = "API RESTful developed in course 'Rest API's From 0 to Azure with ASP.NET Core 5 and Docker'",
+                        Contact = new OpenApiContact
+                        {
+                            Name = "Evandro Lucas",
+                            Url = new Uri("https://github.com/evandrolucas60")
+                        }
+                    });
+            });
+
             //Add a Dependencie Injection To IPersonService Interface
             builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
             builder.Services.AddScoped<IBookBusiness, BookBusinessImplementation>();
@@ -66,6 +84,18 @@ namespace RestWithASPNET5
             // Configure the HTTP request pipeline.
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", 
+                    "Rest API's From 0 to Azure with ASP.NET Core 5 and Docker - v1");
+            });
+
+            var option = new RewriteOptions();
+            option.AddRedirect("^$", "swagger");
+            app.UseRewriter(option);
 
             app.UseAuthorization();
 
