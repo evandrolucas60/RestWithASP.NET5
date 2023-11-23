@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using RestWithASPNET5.Business;
+using RestWithASPNET5.Hypermedia.Filters;
 using RestWithASPNET5.Model;
 
 namespace RestWithASPNET5.Controllers
@@ -19,12 +20,15 @@ namespace RestWithASPNET5.Controllers
             _bookBusiness = bookBusiness;
         }
 
+        [HttpGet]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get()
         {
             return Ok(_bookBusiness.FindAll());
         }
 
         [HttpGet("{id}")]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get(long id) 
         {
             var book = _bookBusiness.FindByID(id);
@@ -33,6 +37,7 @@ namespace RestWithASPNET5.Controllers
         }
 
         [HttpPost]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Post([FromBody] BookVO book)
         {
             if (book == null) return BadRequest();
@@ -40,6 +45,7 @@ namespace RestWithASPNET5.Controllers
         }
 
         [HttpPut]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Put([FromBody] BookVO book)
         {
             if (book == null) return BadRequest(); 
@@ -47,7 +53,6 @@ namespace RestWithASPNET5.Controllers
         }
 
         [HttpDelete("{id}")]
-        [HttpDelete]
         public IActionResult Delete(long id)
         {
             _bookBusiness.Delete(id);
