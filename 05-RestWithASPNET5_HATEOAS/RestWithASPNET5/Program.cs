@@ -21,6 +21,13 @@ namespace RestWithASPNET5
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
 
+            builder.Services.AddCors(options => options.AddDefaultPolicy(builder =>
+            {
+                builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+            }));
+
             // Add services to the container.
             builder.Services.AddControllers();
 
@@ -85,11 +92,15 @@ namespace RestWithASPNET5
 
             app.UseHttpsRedirection();
 
+            app.UseRouting();
+
+            app.UseCors();
+
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", 
+                c.SwaggerEndpoint("/swagger/v1/swagger.json",
                     "Rest API's From 0 to Azure with ASP.NET Core 5 and Docker - v1");
             });
 
