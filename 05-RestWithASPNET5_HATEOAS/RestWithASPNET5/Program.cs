@@ -9,6 +9,15 @@ using RestWithASPNET5.Hypermedia.Filters;
 using RestWithASPNET5.Hypermedia.Enricher;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Rewrite;
+using RestWithASPNET5.Services;
+using RestWithASPNET5.Services.Implementations;
+using RestWithASPNET5.Configurations;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestWithASPNET5
 {
@@ -20,6 +29,42 @@ namespace RestWithASPNET5
 
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
+
+            var tokenConfigurations = new TokenConfiguration();
+
+            new ConfigureFromConfigurationOptions<TokenConfiguration>(
+                    builder.Configuration.GetSection("TokenConfiguration")
+                     ).Configure(tokenConfigurations);
+
+            builder.Services.AddSingleton(tokenConfigurations);
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = tokenConfigurations.Issuer,
+                        ValidAudience = tokenConfigurations.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfigurations.Secret))
+                    };
+                });
+
+
+            builder.Services.AddAuthorization(auth =>
+                {
+                    auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                        .RequireAuthenticatedUser().Build());
+                });
+
 
             builder.Services.AddCors(options => options.AddDefaultPolicy(builder =>
             {
@@ -71,9 +116,15 @@ namespace RestWithASPNET5
                     });
             });
 
-            //Add a Dependencie Injection To IPersonService Interface
+            //Dependency Injection
             builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
             builder.Services.AddScoped<IBookBusiness, BookBusinessImplementation>();
+            builder.Services.AddScoped<ILoginBusiness, LoginBusinessImplementation>();
+
+            builder.Services.AddTransient<ITokenService, TokenService>();
+
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+
             builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
             var app = builder.Build();
