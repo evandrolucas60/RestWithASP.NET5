@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestWithASPNET5.Context;
 
@@ -11,9 +12,11 @@ using RestWithASPNET5.Context;
 namespace RestWithASPNET5.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231128172950__V1_User_seed_migration")]
+    partial class _V1_User_seed_migration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -234,10 +237,10 @@ namespace RestWithASPNET5.Migrations
                         {
                             Id = 1L,
                             Fullname = "Evandro Lucas da Silva",
-                            Password = "24-0B-E5-18-FA-BD-27-24-DD-B6-F0-4E-EB-1D-A5-96-74-48-D7-E8-31-C0-8C-8F-A8-22-80-9F-74-C7-20-A9",
+                            Password = "fc8252c8dc55839967c58b9ad755a59b61b67c13227ddae4bd3f78a38bf394f7",
                             RefreshToken = "h9lzVOoLlBoTbcQrh/e16/aIj+4p6C67lLdDbBRMsjE=",
-                            RefreshTokenExpiryTime = new DateTime(2023, 11, 28, 14, 58, 35, 639, DateTimeKind.Local).AddTicks(3119),
-                            Username = "evandro"
+                            RefreshTokenExpiryTime = new DateTime(2023, 11, 28, 14, 29, 50, 249, DateTimeKind.Local).AddTicks(1920),
+                            Username = "Evandro"
                         });
                 });
 #pragma warning restore 612, 618
