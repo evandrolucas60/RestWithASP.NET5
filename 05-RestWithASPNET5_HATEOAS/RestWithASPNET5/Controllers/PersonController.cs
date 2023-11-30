@@ -11,7 +11,7 @@ namespace RestWithASPNET5.Controllers
     [ApiController]
     [Authorize("Bearer")]
     [Route("api/[controller]/v{version:apiVersion}")]
-    public class PersonController : ControllerBase
+    public class PersonController : Controller
     {
         
         private readonly ILogger<PersonController> _logger;

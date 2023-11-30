@@ -10,7 +10,7 @@ namespace RestWithASPNET5.Controllers
     [ApiVersion("1")]
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
-    public class BookController : ControllerBase
+    public class BookController : Controller
     {
         private readonly ILogger<BookController> _logger;
         private IBookBusiness _bookBusiness;
