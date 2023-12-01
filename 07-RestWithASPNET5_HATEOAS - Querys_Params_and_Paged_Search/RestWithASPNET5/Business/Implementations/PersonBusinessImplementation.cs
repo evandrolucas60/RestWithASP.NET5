@@ -2,6 +2,7 @@
 using RestWithASPNET5.Data.VO;
 using RestWithASPNET5.Model;
 using RestWithASPNET5.Repository;
+using System;
 
 namespace RestWithASPNET5.Business.Implementations
 {
@@ -41,6 +42,11 @@ namespace RestWithASPNET5.Business.Implementations
         public PersonVO FindByID(long id)
         {
             return _coverter.Parse(_repository.FindByID(id));
+        }
+
+        public List<PersonVO> FindByName(string firstName, string lastName)
+        {
+            return _coverter.Parse(_repository.FindByName(firstName, lastName));
         }
 
 

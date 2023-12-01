@@ -13,7 +13,7 @@ namespace RestWithASPNET5.Controllers
     [Route("api/[controller]/v{version:apiVersion}")]
     public class PersonController : Controller
     {
-        
+
         private readonly ILogger<PersonController> _logger;
 
         // Declaration of the service used
@@ -52,6 +52,19 @@ namespace RestWithASPNET5.Controllers
         public IActionResult Get(long id)
         {
             var person = _personBusiness.FindByID(id);
+            if (person == null) return NotFound();
+            return Ok(person);
+        }
+
+        [HttpGet("findPersonByName")]
+        [ProducesResponseType((200), Type = typeof(PersonVO))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult Get([FromQuery] string firstName = null, [FromQuery] string lastName = null)
+        {
+            var person = _personBusiness.FindByName(firstName, lastName);
             if (person == null) return NotFound();
             return Ok(person);
         }
