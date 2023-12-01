@@ -9,9 +9,8 @@ using RestWithASPNET5.Model;
 namespace RestWithASPNET5.Controllers
 {
     [ApiVersion("1")]
-    [ApiController]
-    [Authorize("Bearer")]
     [Route("api/[controller]/v{version:apiVersion}")]
+    [ApiController]
     public class AuthController : Controller
     {
         private ILoginBusiness _loginBusiness;
@@ -25,7 +24,7 @@ namespace RestWithASPNET5.Controllers
         [Route("signin")]
         public IActionResult Signin([FromBody] UserVO user)
         {
-            if (user == null) BadRequest("Invalid Client Request");
+            if (user == null) return BadRequest("Invalid Client Request");
             var token = _loginBusiness.ValidateCredentials(user);
             if (token == null) return Unauthorized();
             return Ok(token);
@@ -35,7 +34,7 @@ namespace RestWithASPNET5.Controllers
         [Route("refresh")]
         public IActionResult Refresh([FromBody] TokenVO tokenVO) 
         {
-            if (tokenVO == null) BadRequest("Invalid Client Request");
+            if (tokenVO == null) return BadRequest("Invalid Client Request");
             var token = _loginBusiness.ValidateCredentials(tokenVO);
             if (token == null) return BadRequest("Invalid Client Request");
             return Ok(token);
