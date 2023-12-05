@@ -8,20 +8,30 @@ namespace RestWithASPNET5.Repository.Generic
 {
     public class GenericRepository<T> : IRepository<T> where T : BaseEntity
     {
-        private DbSet<T> _dbSet;
-        protected readonly ApplicationDbContext _context;
+        protected ApplicationDbContext _context;
 
+        private DbSet<T> dataset;
         public GenericRepository(ApplicationDbContext context)
         {
             _context = context;
-            _dbSet = _context.Set<T>();
+            dataset = _context.Set<T>();
+        }
+
+        public List<T> FindAll()
+        {
+            return dataset.ToList();
+        }
+
+        public T FindByID(long id)
+        {
+            return dataset.SingleOrDefault(p => p.Id.Equals(id));
         }
 
         public T Create(T item)
         {
             try
             {
-                _dbSet.Add(item);
+                dataset.Add(item);
                 _context.SaveChanges();
                 return item;
             }
@@ -29,41 +39,11 @@ namespace RestWithASPNET5.Repository.Generic
             {
                 throw;
             }
-
-        }
-
-        public void Delete(long id)
-        {
-            var result = _dbSet.SingleOrDefault(p => p.Id.Equals(id));
-
-            if (result != null)
-            {
-                try
-                {
-                    _dbSet.Remove(result);
-                    _context.SaveChanges();
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-            }
-        }
-
-        public List<T> FindAll()
-        {
-            return _dbSet.ToList();
-        }
-
-        public T FindByID(long id)
-        {
-            return _dbSet.SingleOrDefault(p => p.Id.Equals(id));
         }
 
         public T Update(T item)
         {
-            var result = _dbSet.SingleOrDefault(p => p.Id.Equals(item.Id));
-
+            var result = dataset.SingleOrDefault(p => p.Id.Equals(item.Id));
             if (result != null)
             {
                 try
@@ -82,9 +62,47 @@ namespace RestWithASPNET5.Repository.Generic
                 return null;
             }
         }
+
+        public void Delete(long id)
+        {
+            var result = dataset.SingleOrDefault(p => p.Id.Equals(id));
+            if (result != null)
+            {
+                try
+                {
+                    dataset.Remove(result);
+                    _context.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+        }
+
         public bool Exists(long id)
         {
-            return _dbSet.Any(p => p.Id.Equals(id));
+            return dataset.Any(p => p.Id.Equals(id));
+        }
+
+        public List<T> FindWithPagedSearch(string query)
+        {
+            return dataset.FromSqlRaw<T>(query).ToList();
+        }
+
+        public int GetCount(string query)
+        {
+            var result = "";
+            using (var connection = _context.Database.GetDbConnection())
+            {
+                connection.Open();
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = query;
+                    result = command.ExecuteScalar().ToString();
+                }
+            }
+            return int.Parse(result);
         }
     }
 }
