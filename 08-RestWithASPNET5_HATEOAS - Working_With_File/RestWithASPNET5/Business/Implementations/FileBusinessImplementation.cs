@@ -25,7 +25,7 @@ namespace RestWithASPNET5.Business.Implementations
             var baseUrl = _context.HttpContext.Request.Host;
 
             if (fileType.ToLower() == ".pdf" || fileType.ToLower() == ".jpg" || 
-                fileType.ToLower() == ".png" || fileType.ToLower() == "jpeg")
+                fileType.ToLower() == ".png" || fileType.ToLower() == ".jpeg")
             {
                 var docName = Path.GetFileName(file.FileName);
                 if (file != null && file.Length > 0)
@@ -43,9 +43,14 @@ namespace RestWithASPNET5.Business.Implementations
             return fileDetail;
         }
 
-        public Task<FileDetailVO> SaveFilesToDisk(IList<IFormFile> file)
+        public async Task<List<FileDetailVO>> SaveFilesToDisk(IList<IFormFile> files)
         {
-            throw new NotImplementedException();
+            List<FileDetailVO> list = new List<FileDetailVO>();
+            foreach (var file in files)
+            {
+                list.Add(await SaveFileToDisk(file));
+            }
+            return list;
         }
     }
 
