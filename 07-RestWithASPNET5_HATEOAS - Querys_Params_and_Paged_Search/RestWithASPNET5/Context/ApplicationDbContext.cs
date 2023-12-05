@@ -27,6 +27,7 @@ namespace RestWithASPNET5.Context
                     new Person { Id = 3, Address = "Petrolina", FirstName = "Danielly", Gender = "Femele", LastName = "Oliveira", Enabled = true },
                     new Person { Id = 4, Address = "Juazeiro", FirstName = "Lucinea", Gender = "Femele", LastName = "Lucas", Enabled = true },
                     new Person { Id = 5, Address = "Recife", FirstName = "Bruno", Gender = "male", LastName = "Lucas", Enabled = true }
+
                 );
             
             
