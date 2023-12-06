@@ -7,7 +7,7 @@
     <ProjectGuid>1dd5ccac-9708-4e0c-900e-cb67d70438af</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>rest-with-aspnet5</DockerServiceName>
+    <DockerServiceName>restwithaspnet5</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.yml" />

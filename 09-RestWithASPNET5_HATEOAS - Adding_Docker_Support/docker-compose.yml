@@ -1,8 +1,38 @@
 version: '3.4'
 
 services:
-  restwithaspnet5:
-    image: ${DOCKER_REGISTRY-}restwithaspnet5
+  db: 
+    image: rest-with-aspnet5-db
+    command: sql --default-autentication-plugin=sql_native_password
+    restart: always
+    build: 
+      context: .
+      dockerfile: db/dockerfile
+    environment: 
+      - TZ=America/Sao_Paulo
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourPasswordHere
+      - SQL_DATABASE=rest_with_asp_net
+      - MSSQL_PID=Express
+      - MSSQL_AUTHENTICATION=Windows
+    ports: 
+      - 7278:7276
+    networks:
+      - udemy-network
+  rest-with-aspnet5:
+    image: rest-with-aspnet5
     build:
       context: .
       dockerfile: RestWithASPNET5/Dockerfile
+    environment: 
+      - TZ=America/Sao_Paulo
+      - ASPNETCORE_ENVIRONMENT= Production
+    ports: 
+      - 7276:81
+    depends_on:
+      - db
+    networks:
+      - udemy-network
+networks:
+      udemy-network:
+        driver: bridge
