@@ -1,0 +1,1 @@
+for i in `find /home/database/ -name "*.sql" | sort --version-sort`; do sql -udocker -pdocker rest_with_asp_net <$i; done;
