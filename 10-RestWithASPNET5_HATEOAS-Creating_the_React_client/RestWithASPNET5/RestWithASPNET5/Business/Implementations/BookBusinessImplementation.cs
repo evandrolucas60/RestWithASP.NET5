@@ -42,7 +42,7 @@ namespace RestWithASPNET5.Business.Implementations
 
             string query = @"select * from books p where 1 = 1 ";
             if (!string.IsNullOrWhiteSpace(title)) query = query + $" and p.Title like '%{title}%' ";
-            query += $" order by p.Title {sort} OFFSET {size} ROWS FETCH NEXT {offset} ROWS ONLY";
+            query += $" order by p.Title {sort} OFFSET {offset} ROWS FETCH NEXT {size} ROWS ONLY";
 
             string countQuery = @"select count(*) from books p where 1 = 1 ";
             if (!string.IsNullOrWhiteSpace(title)) countQuery = countQuery + $" and p.Title like '%{title}%' ";
