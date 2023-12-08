@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestWithASPNET5.Business;
 using RestWithASPNET5.Data.VO;
@@ -9,6 +10,7 @@ namespace RestWithASPNET5.Controllers
 {
     [ApiVersion("1")]
     [ApiController]
+    [Authorize("Bearer")]
     [Route("api/[controller]/v{version:apiVersion}")]
     public class BookController : Controller
     {
@@ -21,19 +23,23 @@ namespace RestWithASPNET5.Controllers
             _bookBusiness = bookBusiness;
         }
 
-        [HttpGet]
-        [ProducesResponseType((200), Type = typeof(List<PersonVO>))]
+        [HttpGet("{sortDirection}/{pageSize}/{page}")]
+        [ProducesResponseType((200), Type = typeof(List<BookVO>))]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
-        public IActionResult Get()
+        public IActionResult Get(
+            [FromQuery] string title,
+            string sortDirection,
+            int pageSize,
+            int page)
         {
-            return Ok(_bookBusiness.FindAll());
+            return Ok(_bookBusiness.FindWithPagedSearch(title, sortDirection, pageSize, page));
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType((200), Type = typeof(PersonVO))]
+        [ProducesResponseType((200), Type = typeof(BookVO))]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
@@ -46,7 +52,7 @@ namespace RestWithASPNET5.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType((200), Type = typeof(PersonVO))]
+        [ProducesResponseType((200), Type = typeof(BookVO))]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
@@ -57,7 +63,7 @@ namespace RestWithASPNET5.Controllers
         }
 
         [HttpPut]
-        [ProducesResponseType((200), Type = typeof(PersonVO))]
+        [ProducesResponseType((200), Type = typeof(BookVO))]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
