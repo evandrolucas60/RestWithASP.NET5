@@ -1,12 +1,20 @@
 ﻿using RestWithASPNET5.Model.Base;
-
+using System.ComponentModel.DataAnnotations.Schema;
 namespace RestWithASPNET5.Model
 {
+    [Table("books")]
     public class Book : BaseEntity
     {
-        public string Author { get; set; }
-        public DateTime Date { get; set; }
-        public double Price { get; set; }
+        [Column("title")]
         public string Title { get; set; }
+
+        [Column("author")]
+        public string Author { get; set; }
+
+        [Column("price")]
+        public double Price { get; set; }
+
+        [Column("launch_date")]
+        public DateTime LaunchDate { get; set; }
     }
 }

@@ -1,5 +1,6 @@
-﻿using RestWithASPNET5.Hypermedia.Utils;
-using RestWithASPNET5.Model;
+﻿using RestWithASPNET5.Data.VO;
+using RestWithASPNET5.Hypermedia.Utils;
+
 
 namespace RestWithASPNET5.Business
 {

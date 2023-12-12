@@ -13,6 +13,7 @@ namespace RestWithASPNET5.Controllers
     [Route("api/[controller]/v{version:apiVersion}")]
     public class PersonController : ControllerBase
     {
+
         private readonly ILogger<PersonController> _logger;
 
         // Declaration of the service used
@@ -35,12 +36,12 @@ namespace RestWithASPNET5.Controllers
         [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get(
-            [FromQuery] string? name, 
-            string sortDirection, 
-            int pageSize, 
+            [FromQuery] string? title,
+            string sortDirection,
+            int pageSize,
             int page)
         {
-            return Ok(_personBusiness.FindWithPagedSearch(name, sortDirection, pageSize, page));
+            return Ok(_personBusiness.FindWithPagedSearch(title, sortDirection, pageSize, page));
         }
 
         // Maps GET requests to https://localhost:{port}/api/person/{id}
@@ -65,7 +66,7 @@ namespace RestWithASPNET5.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
-        public IActionResult Get([FromQuery] string firstName = null, [FromQuery] string lastName = null)
+        public IActionResult Get([FromQuery] string firstName, [FromQuery] string lastName)
         {
             var person = _personBusiness.FindByName(firstName, lastName);
             if (person == null) return NotFound();
@@ -98,9 +99,6 @@ namespace RestWithASPNET5.Controllers
             return Ok(_personBusiness.Update(person));
         }
 
-        // Maps GET requests to https://localhost:{port}/api/person/{id}
-        // receiving an ID as in the Request Path
-        // Get with parameters for FindById -> Search by ID
         [HttpPatch("{id}")]
         [ProducesResponseType((200), Type = typeof(PersonVO))]
         [ProducesResponseType(204)]
@@ -124,6 +122,5 @@ namespace RestWithASPNET5.Controllers
             _personBusiness.Delete(id);
             return NoContent();
         }
-
     }
 }

@@ -1,8 +1,8 @@
 ﻿using RestWithASPNET5.Data.Converter.Implementations;
+using RestWithASPNET5.Data.VO;
 using RestWithASPNET5.Hypermedia.Utils;
 using RestWithASPNET5.Model;
 using RestWithASPNET5.Repository;
-using System;
 
 namespace RestWithASPNET5.Business.Implementations
 {
@@ -17,24 +17,13 @@ namespace RestWithASPNET5.Business.Implementations
             _converter = new BookConverter();
         }
 
-        public BookVO Create(BookVO book)
+        // Method responsible for returning all people,
+        List<BookVO> IBookBusiness.FindAll()
         {
-            var bookEntity = _converter.Parse(book);
-            bookEntity = _repository.Create(bookEntity);
-            return _converter.Parse(bookEntity);
+            return _converter.Parse(_repository.FindAll()); ;
         }
 
-        public void Delete(long id)
-        {
-            _repository.Delete(id);
-        }
-
-        public List<BookVO> FindAll()
-        {
-            return _converter.Parse(_repository.FindAll());
-        }
-
-        public PagedSearchVO<BookVO> FindWithPagedSearch(string title, string sortDirection, int pageSize, int page)
+        PagedSearchVO<BookVO> IBookBusiness.FindWithPagedSearch(string title, string sortDirection, int pageSize, int page)
         {
             var sort = (!string.IsNullOrWhiteSpace(sortDirection)) && !sortDirection.Equals("desc") ? "asc" : "desc";
             var size = (pageSize < 1) ? 10 : pageSize;
@@ -60,16 +49,33 @@ namespace RestWithASPNET5.Business.Implementations
             };
         }
 
-        public BookVO FindByID(long id)
+        // Method responsible for returning one book by ID
+        BookVO IBookBusiness.FindByID(long id)
         {
             return _converter.Parse(_repository.FindByID(id));
         }
 
+        // Method responsible to crete one new book
+        public BookVO Create(BookVO book)
+        {
+            var bookEntity = _converter.Parse(book);
+            bookEntity = _repository.Create(bookEntity);
+            return _converter.Parse(bookEntity);
+        }
+
+        // Method responsible for updating one book
         public BookVO Update(BookVO book)
         {
             var bookEntity = _converter.Parse(book);
             bookEntity = _repository.Update(bookEntity);
             return _converter.Parse(bookEntity);
         }
+
+        // Method responsible for deleting a book from an ID
+        public void Delete(long id)
+        {
+            _repository.Delete(id);
+        }
+          
     }
 }

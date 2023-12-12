@@ -4,8 +4,8 @@ namespace RestWithASPNET5.Services
 {
     public interface ITokenService
     {
-        string GenerateAcessToken(IEnumerable<Claim> claims);
+        string GenerateAccessToken(IEnumerable<Claim> claims);
         string GenerateRefreshToken();
-        ClaimsPrincipal GetClaimsPrincipalFromExpiredToken(string token);
+        ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
     }
 }

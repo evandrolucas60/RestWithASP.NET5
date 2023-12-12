@@ -16,7 +16,7 @@ namespace RestWithASPNET5.Services.Implementations
             _configuration = configuration;
         }
 
-        public string GenerateAcessToken(IEnumerable<Claim> claims)
+        public string GenerateAccessToken(IEnumerable<Claim> claims)
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.Secret));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
@@ -43,7 +43,7 @@ namespace RestWithASPNET5.Services.Implementations
                
         }
 
-        public ClaimsPrincipal GetClaimsPrincipalFromExpiredToken(string token)
+        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
@@ -56,12 +56,14 @@ namespace RestWithASPNET5.Services.Implementations
             var tokenHandler = new JwtSecurityTokenHandler();
             SecurityToken securityToken;
 
-            ClaimsPrincipal principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
             var jwtSecuritytoken = securityToken as JwtSecurityToken;
 
-            if (jwtSecuritytoken == null ||
-                !jwtSecuritytoken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
-                StringComparison.InvariantCulture)) throw new SecurityTokenException("Invalid Token");
+            if (jwtSecuritytoken == null || !jwtSecuritytoken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCulture))
+            {
+                throw new SecurityTokenException("Invalid Token");
+            }
+
             return principal;
         }
     }

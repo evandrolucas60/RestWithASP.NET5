@@ -1,18 +1,18 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestWithASPNET5.Business;
 using RestWithASPNET5.Data.VO;
 
 namespace RestWithASPNET5.Controllers
 {
-
     [ApiVersion("1")]
+    [Authorize("Bearer")]
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
     public class FileController : Controller
     {
         private readonly IFileBusiness _fileBusiness;
-
         public FileController(IFileBusiness fileBusiness)
         {
             _fileBusiness = fileBusiness;
@@ -48,7 +48,6 @@ namespace RestWithASPNET5.Controllers
             return new OkObjectResult(detail);
         }
 
-
         [HttpPost("uploadMultipleFiles")]
         [ProducesResponseType((200), Type = typeof(List<FileDetailVO>))]
         [ProducesResponseType(400)]
@@ -59,5 +58,7 @@ namespace RestWithASPNET5.Controllers
             List<FileDetailVO> details = await _fileBusiness.SaveFilesToDisk(files);
             return new OkObjectResult(details);
         }
+
+
     }
 }

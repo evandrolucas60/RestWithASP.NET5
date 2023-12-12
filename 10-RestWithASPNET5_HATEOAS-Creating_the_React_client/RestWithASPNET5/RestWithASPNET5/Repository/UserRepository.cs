@@ -1,9 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RestWithASPNET5.Context;
+﻿using RestWithASPNET5.Context;
 using RestWithASPNET5.Data.VO;
 using RestWithASPNET5.Model;
-using System.Data;
-using System.Runtime.Intrinsics.Arm;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -20,7 +17,7 @@ namespace RestWithASPNET5.Repository
 
         public User? ValidateCredentials(UserVO user)
         {
-            var pass = ComputeHash(user.Password, SHA256.Create());      
+            var pass = ComputeHash(user.Password, SHA256.Create());
             return _context.users.FirstOrDefault(u => (u.Username == user.Username) && (u.Password == pass));
         }
 
@@ -33,7 +30,7 @@ namespace RestWithASPNET5.Repository
         {
             var user = _context.users.SingleOrDefault(u => u.Username == username);
             if (user is null) return false;
-            user.RefreshToken = null;
+            user.RefreshToken = Guid.NewGuid().ToString();
             _context.SaveChanges();
             return true;
         }
