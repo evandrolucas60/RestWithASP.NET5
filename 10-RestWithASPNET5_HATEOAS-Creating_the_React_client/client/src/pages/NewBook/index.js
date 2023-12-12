@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiArrowLeft} from 'react-icons/fi'
 
+
 import './style.css';
 
 import logoImage from '../../assets/logo.svg'
@@ -37,7 +38,7 @@ export default function NewBook() {
                     'Accept' : 'application/json',
                     'Authorization' : `Bearer ${accessToken}`
                   }
-            })
+            });
             navigate('/books');
         } catch (error) {
             alert('Error while recording Book! Try again!');
