@@ -28,9 +28,9 @@ namespace RestWithASPNET5.Repository
 
         public bool RevokeToken(string username)
         {
-            var user = _context.users.SingleOrDefault(u => u.Username == username);
+            var user = _context.users.SingleOrDefault(u => (u.Username == username));
             if (user is null) return false;
-            user.RefreshToken = Guid.NewGuid().ToString();
+            user.RefreshToken = null;
             _context.SaveChanges();
             return true;
         }

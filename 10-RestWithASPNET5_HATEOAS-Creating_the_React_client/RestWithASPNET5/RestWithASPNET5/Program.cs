@@ -32,12 +32,14 @@ namespace RestWithASPNET5
             builder.Logging.AddConsole();
 
             var tokenConfigurations = new TokenConfiguration();
+            var tokenLifetimeManager = new JwtTokenLifetimeManager();
 
             new ConfigureFromConfigurationOptions<TokenConfiguration>(
                     builder.Configuration.GetSection("TokenConfigurations")
                      ).Configure(tokenConfigurations);
 
             builder.Services.AddSingleton(tokenConfigurations);
+            builder.Services.AddSingleton<ITokenLifetimeManager>(tokenLifetimeManager);
 
             builder.Services.AddAuthentication(options =>
             {
@@ -54,7 +56,8 @@ namespace RestWithASPNET5
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = tokenConfigurations.Issuer,
                         ValidAudience = tokenConfigurations.Audience,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfigurations.Secret))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfigurations.Secret)),
+                        LifetimeValidator = tokenLifetimeManager.ValidateToken
                     };
                 });
 
