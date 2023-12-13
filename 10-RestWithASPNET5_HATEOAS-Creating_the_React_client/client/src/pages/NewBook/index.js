@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Await, Link, useNavigate, useParams } from "react-router-dom";
 import { FiArrowLeft} from 'react-icons/fi'
 
 
@@ -11,6 +11,7 @@ import api from "../../services/api";
 
 export default function NewBook() {
 
+    const [id, setId] = useState(null);
     const [author, setAuthor] = useState('');
     const [title, setTitle] = useState('');
     const [launchDate, setLaunchDate] = useState('');
@@ -19,6 +20,38 @@ export default function NewBook() {
     const {bookId }= useParams();
 
     const navigate = useNavigate();
+
+    const accessToken = localStorage.getItem('accessToken');
+    const authorization = {
+        headers : {
+            'Content-Type' : 'application/json',
+            'Accept' : 'application/json',
+            'Authorization' : `Bearer ${accessToken}`
+          }
+    }
+
+    useEffect(()=> {
+        if (bookId === '0') return;
+        else loadBook();
+    }, bookId);
+
+    async function loadBook(){
+        try {
+          const response = await api.get(`api/book/v1/${bookId}`, authorization)  
+
+          let adjustedDate = response.data.launchDate.split("T", 10)[0];
+
+          setId(response.data.id);
+          setTitle(response.data.title);
+          setAuthor(response.data.author);
+          setLaunchDate(adjustedDate);
+          setPrice(response.data.price);
+
+        } catch (error) {
+            alert('Erro recovering Book! Try again!');
+            navigate('/books');
+        }
+    }
 
     async function createNewBook(e) {
         e.preventDefault();
@@ -30,17 +63,10 @@ export default function NewBook() {
             price,
         }
 
-        const accessToken = localStorage.getItem('accessToken');
         console.log(`Bearer ${accessToken.toString()}`);
 
         try {
-            await api.post('api/Book/v1', data, {
-                headers : {
-                    'Content-Type' : 'application/json',
-                    'Accept' : 'application/json',
-                    'Authorization' : `Bearer ${accessToken}`
-                  }
-            });
+            await api.post('api/Book/v1', data, authorization);
             navigate('/books');
         } catch (error) {
             alert('Error while recording Book! Try again!');
