@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { FiArrowLeft} from 'react-icons/fi'
 
 
@@ -15,6 +15,8 @@ export default function NewBook() {
     const [title, setTitle] = useState('');
     const [launchDate, setLaunchDate] = useState('');
     const [price, setPrice] = useState('');
+
+    const {bookId }= useParams();
 
     const navigate = useNavigate();
 
@@ -52,7 +54,7 @@ export default function NewBook() {
                 <section className="form">
                     <img src={logoImage} alt="Erudio" />
                     <h1>Add New Book</h1>
-                    <p>Enter the book infomation an click on 'Add'!</p>
+                    <p>Enter the book infomation an click on 'Add'! ##### ${bookId} </p>
                     <Link className="back-link" to="/books">
                         <FiArrowLeft size={16} color="#251fc5" />
                         Home
